@@ -1,0 +1,73 @@
+# Disable caching for sensitive content (no-store, no-cache)
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "Sat, 26 Jul 1997 05:00:00 GMT"
+</IfModule>
+# Enable URL rewriting
+RewriteEngine on 
+# Add .php extension if not already present for files that are not directories
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php [NC,L]
+# Redirect specific URLs to corresponding PHP files or HTML pages
+RewriteRule  ^config config/phpinfo.php [NC,L]
+RewriteRule  ^ไม่พบข้อมูล.html app/error/404.html [NC,L]
+RewriteRule  ^เช็ค_(.*)_(.*)_(.*)_(.*).html api/tenko/check.php?tenko=$1&emp=$2&regis=$3&area=$4 [NC,L]
+# User authentication pages
+RewriteRule  ^เข้าสู่ระบบ.html app/authentication/login.php [NC,L]
+RewriteRule  ^ออกจากระบบ.html app/authentication/logout.php [NC,L]
+# Welcome and landing pages
+RewriteRule  ^ยินดีต้อนรับ.html app/welcome/welcome.php [NC,L]
+RewriteRule  ^หน้าหลัก.html app/landingpage/index.php [NC,L]
+RewriteRule  ^ภาพรวม.html app/dashboard/dashboard.php [NC,L]
+# Web setting management
+RewriteRule  ^ข้อมูลเว็บ.html app/setting_manage/setting.php [NC,L]
+RewriteRule  ^แก้ไขข้อมูลเว็บ-(.*).html app/setting_manage/setting.php?id=$1 [NC,L]
+# User management
+RewriteRule  ^จัดการสมาชิก.html app/user_manage/usermain.php   [NC,L]
+RewriteRule  ^เพิ่มสิทธิ์สมาชิก.html app/user_manage/usermainform.php [NC,L]
+RewriteRule  ^ข้อมูลสมาชิกรหัส-(.*).html app/user_manage/usermainform.php?id=$1 [NC,L]
+# Request role management
+RewriteRule  ^ร้องขอสิทธิ์.html app/request_role/requestmain.php [NC,L]
+RewriteRule  ^ร้องขอสิทธิ์รหัส-(.*)-(.*).html app/user_manage/usermainform.php?id=$1&rqrid=$2 [NC,L]
+# Menu management
+RewriteRule  ^จัดการเมนู.html app/menu_manage/menumain.php [NC,L]
+RewriteRule  ^แก้ไขเมนูหลัก-(.*).html app/menu_manage/menumainedit.php?id=$1 [NC,L]
+RewriteRule  ^จัดการเมนูย่อย-(.*).html app/menu_manage/menusub.php?id=$1 [NC,L]
+RewriteRule  ^แก้ไขเมนูย่อย-(.*)-(.*).html app/menu_manage/menusubedit.php?id=$1&mid=$2 [NC,L]
+# Role management (permissions)
+RewriteRule  ^จัดการสิทธิ์.html app/role_manage/rolemain.php [NC,L]
+RewriteRule  ^แก้ไขข้อมูลสิทธิ์-(.*).html app/role_manage/rolemainform.php?id=$1 [NC,L]
+RewriteRule  ^สิทธิ์ใช้งานเมนู-(.*).html app/role_manage/rolesub.php?id=$1 [NC,L]
+RewriteRule  ^เพิ่มสิทธิ์ใช้งานเมนู-(.*).html app/role_manage/rolesubform.php?id=$1 [NC,L]
+RewriteRule  ^แก้ไขสิทธิ์ใช้งานเมนู-(.*)-(.*).html app/role_manage/rolesubform.php?id=$1&rmid=$2 [NC,L]
+# Debtor management
+RewriteRule  ^จัดการลูกหนี้.html app/debtor_manage/debtor.php [NC,L]
+RewriteRule  ^แก้ไขลูกหนี้-(.*).html app/debtor_manage/debtorform.php?id=$1 [NC,L]
+# Billing Number Book management
+RewriteRule  ^สมุดคุมเลขที่วางบิล.html app/billing_manage/billing.php [NC,L]
+RewriteRule  ^แก้ไขใบวางบิล-(.*).html app/billing_manage/billingform.php?id=$1 [NC,L]
+# Notification management
+RewriteRule  ^จัดการการแจ้งเตือน.html app/notification_manage/notimain.php [NC,L]
+RewriteRule  ^แก้ไขการแจ้งเตือน-(.*).html app/notification_manage/notimainform.php?id=$1 [NC,L]
+RewriteRule  ^แก้ไขการข้อความแจ้งเตือน-(.*).html app/notification_manage/notimainformtext.php?id=$1 [NC,L]
+# Notification management
+RewriteRule  ^ตั้งค่าการส่งเมล.html app/mail_manage/mailmain.php [NC,L]
+RewriteRule  ^แก้ไขการส่งเมล-(.*).html app/mail_manage/mailmainform.php?id=$1 [NC,L]
+RewriteRule  ^แก้ไขการรายชื่อส่งเมล-(.*).html app/mail_manage/mailmainformtext.php?id=$1 [NC,L]
+# Report management
+RewriteRule  ^รายงานสมุดคุมเลขที่วางบิลประจำเดือน.html app/report_manage/report_mbc.php [NC,L]
+RewriteRule  ^รายงานสมุดคุมเลขที่วางบิลของ_(.*)_เดือน_(.*)_ปี_(.*).xlsx app/report_manage/report_mbc_ex.php?a1=$1&a2=$2&a3=$3 [NC,L]
+RewriteRule  ^รายงานสมุดคุมเลขที่วางบิลของ_(.*)_เดือน_(.*)_ปี_(.*).pdf app/report_manage/report_mbc_pdf.php?a1=$1&a2=$2&a3=$3 [NC,L]
+RewriteRule  ^รายงานการแจ้งเตือน.html app/report_manage/report_ntf.php [NC,L]
+RewriteRule  ^รายงานการแจ้งเตือน_(.*)_เดือน_(.*)_ปี_(.*).xlsx app/report_manage/report_ntf_ex.php?a1=$1&a2=$2&a3=$3 [NC,L]
+RewriteRule  ^รายงานการแจ้งเตือน_(.*)_เดือน_(.*)_ปี_(.*).pdf app/report_manage/report_ntf_pdf.php?a1=$1&a2=$2&a3=$3 [NC,L]
+RewriteRule  ^รายงานสรุปแยกลูกค้า.html app/report_manage/report_ctm.php [NC,L]
+RewriteRule  ^รายงานสรุปแยกลูกค้า_(.*)_เดือน_(.*)_ปี_(.*).xlsx app/report_manage/report_ctm_ex.php?a1=$1&a2=$2&a3=$3 [NC,L]
+RewriteRule  ^รายงานสรุปแยกลูกค้า_(.*)_เดือน_(.*)_ปี_(.*).pdf app/report_manage/report_ctm_pdf.php?a1=$1&a2=$2&a3=$3 [NC,L]
+# Import management
+RewriteRule  ^นำเข้าข้อมูล.html app/import_manage/import.php [NC,L]
+RewriteRule  ^ตรวจสอบข้อมูลนำเข้า-(.*).html app/import_manage/importform.php?id=$1 [NC,L]
+# Alert Data Daily Auto
+RewriteRule  ^DailyDataSummaryOf_(.*)_(.*).pdf app/report_manage/report_mbcall_pdf.php?a1=$1&a2=a2&a3=a3&a4=mail [NC,L]

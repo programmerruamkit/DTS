@@ -1,0 +1,1 @@
+﻿<?php header("Location: หน้าหลัก.html"); ?>
